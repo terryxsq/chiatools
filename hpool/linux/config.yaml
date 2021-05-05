@@ -1,0 +1,16 @@
+path: ["/mnt/hdd0", "/mnt/hdd1", "/mnt/hdd2","/mnt/hdd3"]
+minerName: "hexacube-chia04"
+apiKey: "741709cc-c673-485f-a932-bc17fd5aa46b"
+cachePath: ""
+deviceId: ""
+extraParams: {}
+log:
+  lv: info
+  path: ./log/
+  name: miner.log
+url:
+  info: ""
+  submit: ""
+scanPath: true
+scanMinute: 60
+
