@@ -1,0 +1,2 @@
+* * * * * [ $(ls -al #staging_dir | grep plot | wc -l) -gt 0 ] && [ $(ps aux | grep mv | grep -v grep | wc -l) -eq 0 ] && mv #staging_dir_plots #final_dir 
+
