@@ -1,6 +1,6 @@
-#1/usr/bin/env sh
-DEBUG_API=http://localhost:1635
-MIN_AMOUNT=1000
+#!/usr/bin/env bash
+[ -z ${DEBUG_API+x} ] && DEBUG_API=$2
+[ -z ${MIN_AMOUNT+x} ] && MIN_AMOUNT=10000000000
 
 function getPeers() {
   curl -s "$DEBUG_API/chequebook/cheque" | jq -r '.lastcheques | .[].peer'
@@ -44,7 +44,13 @@ function getUncashedAmount() {
 
 function cashout() {
   local peer=$1
-  txHash=$(curl -s -XPOST "$DEBUG_API/chequebook/cashout/$peer" | jq -r .transactionHash) 
+  local response=$(curl -s -XPOST "$2/chequebook/cashout/$peer")  
+  local txHash=$(echo "$response" | jq -r .transactionHash)
+  if [ "$txHash" == "null" ]
+  then
+    echo could not cash out cheque for $peer: $(echo "$response" | jq -r .code,.message)
+    return
+  fi
 
   echo cashing out cheque for $peer in transaction $txHash >&2
 
@@ -63,8 +69,8 @@ function cashoutAll() {
     local uncashedAmount=$(getUncashedAmount $peer)
     if (( "$uncashedAmount" > $minAmount ))
     then
-      echo "uncashed cheque for $peer ($uncashedAmount uncashed)" >&2
-      cashout $peer
+      echo "uncashed cheque for $peer ($uncashedAmount uncashed) on node $2" >&2
+      cashout $peer $2
     fi
   done
 }
@@ -85,7 +91,7 @@ cashout)
   cashout $2
   ;;
 cashout-all)
-  cashoutAll $MIN_AMOUNT
+  cashoutAll $MIN_AMOUNT $2
   ;;
 list-uncashed|*)
   listAllUncashed

@@ -1,0 +1,15 @@
+
+#upgrade bee
+wget https://github.com/ethersphere/bee-clef/releases/download/v0.4.12/bee-clef_0.4.12_amd64.deb
+sudo dpkg -i bee-clef_0.4.12_amd64.deb
+
+wget https://github.com/ethersphere/bee/releases/download/v0.6.2/bee_0.6.2_amd64.deb
+sudo dpkg -i bee_0.6.2_amd64.deb
+
+#set full node
+echo "full-node: true" | sudo tee -a /etc/bee/bee.yaml
+
+#update infura node details
+sudo vi /etc/bee/bee.yaml
+
+
