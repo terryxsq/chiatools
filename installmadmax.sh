@@ -7,4 +7,6 @@ cd ~/chia-plotter
 git submodule update --init
 ./make_devel.sh
 
+sudo mkdir /mnt/ssd/tmp
+sudo chmod 777 /mnt/ssd/tmp
 
